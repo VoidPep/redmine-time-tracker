@@ -21,12 +21,6 @@
 //   email: ''
 // });
 //
-// const resolver = ref(zodResolver(
-//     z.object({
-//       username: z.string().min(1, { message: 'Username is required.' }),
-//       email: z.string().min(1, { message: 'Email is required.' }).email({ message: 'Invalid email address.' })
-//     })
-// ));
 //
 // const onFormSubmit = ({ valid }) => {
 //   if (valid) {
