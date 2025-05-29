@@ -2,8 +2,13 @@
 import {onMounted, ref} from 'vue';
 
 const nome = ref("")
+
+function getNome() {
+  return "Teste"; // pegar da store
+}
+
 onMounted(() => {
-  nome.value = "";
+  nome.value = getNome();
 })
 </script>
 

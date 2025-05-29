@@ -6,26 +6,27 @@ const sprintTasks = ref([])
 const storageUsed = ref(0)
 const maxStorage = ref(100)
 
-// Salvar as configs em um arquivo
-
 export function useRedmineStore() {
-    const carregarConfiguracao = () => {
+    const carregarConfiguracao = async () => {
         try {
-            // const savedConfig = localStorage.getItem('redmine-config')
-            // if (savedConfig) {
-            //     Object.assign(config, JSON.parse(savedConfig))
-            // }
+            const result = await window.electron.ipcRenderer.invoke('get-config')
 
-            return config;
+            Object.assign(config, result)
         } catch (error) {
-            // Substituir por Alert
-            console.error("Error loading config:", error)
+            console.error('Erro ao carregar config:', error)
         }
     }
 
-    const salvarConfiguracao = (newConfig) => {
-        Object.assign(config, newConfig)
-        // localStorage.setItem('redmine-config', JSON.stringify(config))
+    const salvarConfiguracao = async (newConfig) => {
+        try {
+            console.log(newConfig)
+            await window.electron.ipcRenderer.invoke('save-config', newConfig)
+            console.log(config)
+            Object.assign(config, newConfig)
+            console.log(config)
+        } catch (error) {
+            console.error('Erro ao salvar config:', error)
+        }
     }
 
     const calcularUsoDeMemoria = (entries) => {

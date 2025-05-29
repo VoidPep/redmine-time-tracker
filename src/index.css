@@ -18,3 +18,11 @@ body {
   -webkit-backdrop-filter: blur(15px) saturate(150%);
   border-radius: 20px;
 }
+
+ .field {
+   margin-bottom: 1rem;
+ }
+.p-error {
+  color: red;
+  font-size: 0.8rem;
+}

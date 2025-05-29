@@ -1,6 +1,7 @@
-import {app, BrowserWindow, Tray, screen} from 'electron';
+import {app, BrowserWindow, Tray, screen, ipcMain} from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+import {configStore} from "./stores/configStore";
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -55,7 +56,8 @@ const createWindow = () => {
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: true,
+            enableRemoteModule: false
         },
     });
 
@@ -110,8 +112,16 @@ const createWindow = () => {
 app.whenReady().then(() => {
     createWindow();
 
-    // On OS X it's common to re-create a window in the app when the
-    // dock icon is clicked and there are no other windows open.
+    configStore.loadConfig()
+
+    ipcMain.handle('get-config', () => {
+        return configStore.getConfig()
+    })
+
+    ipcMain.handle('save-config', (event, newConfig) => {
+        configStore.saveConfig(newConfig)
+    })
+
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow();
