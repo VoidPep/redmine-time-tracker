@@ -1,10 +1,15 @@
 import {ref, reactive} from 'vue'
 
-const config = reactive({url: '', token: ''})
+const config = reactive({host: '', token: '', username: '', password: '', database: ''})
 const timeEntries = ref([])
 const sprintTasks = ref([])
 const storageUsed = ref(0)
 const maxStorage = ref(100)
+
+// Host=192.168.0.246;
+// Username=redmine;
+// Password=redmine!@#;
+// Database=redmine <- conexão
 
 export function useRedmineStore() {
     const carregarConfiguracao = async () => {
@@ -39,6 +44,20 @@ export function useRedmineStore() {
         // localStorage.removeItem('time-entries')
         // timeEntries.value = []
         // storageUsed.value = 0
+    }
+
+    const testarConexao = async () => {
+        try {
+            config.nome = "teste"
+            await salvarConfiguracao(config)
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const atualizarNome = async () => {
+
     }
 
     return {

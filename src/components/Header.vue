@@ -1,15 +1,8 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {inject} from 'vue';
 
-const nome = ref("")
+const {nome} = inject('nomeUsuario');
 
-function getNome() {
-  return "Teste"; // pegar da store
-}
-
-onMounted(() => {
-  nome.value = getNome();
-})
 </script>
 
 <template>

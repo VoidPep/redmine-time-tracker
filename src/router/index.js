@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router'
 import {useRedmineStore} from "../composables/useRedmineStore";
+import { isNullOrEmpty } from "../helpers";
 
 const redmineStore = useRedmineStore();
 
@@ -32,14 +33,19 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    const config = await redmineStore.carregarConfiguracao();
+    const {database, host, password, token, username} = await redmineStore.carregarConfiguracao();
+
     if (to.path === '/config') {
         next();
         return;
     }
 
-
-    if (!config || !config.url || config.url !== '' && !config.token && config.token !== '') {
+    if (isNullOrEmpty(database) ||
+        isNullOrEmpty(host) ||
+        isNullOrEmpty(password) ||
+        isNullOrEmpty(token) ||
+        isNullOrEmpty(username)
+    ) {
         next('/config')
         return;
     }

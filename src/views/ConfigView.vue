@@ -5,5 +5,5 @@
 </template>
 
 <script setup>
-import ConfigForm from '../components/forms/ConfigForm.vue'
+import ConfigForm from '../components/ConfigForm.vue'
 </script>
