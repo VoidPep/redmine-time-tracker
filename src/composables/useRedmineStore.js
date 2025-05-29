@@ -12,18 +12,18 @@ export function useRedmineStore() {
             const result = await window.electron.ipcRenderer.invoke('get-config')
 
             Object.assign(config, result)
+            return result
         } catch (error) {
             console.error('Erro ao carregar config:', error)
+            return null;
         }
     }
 
     const salvarConfiguracao = async (newConfig) => {
         try {
-            console.log(newConfig)
             await window.electron.ipcRenderer.invoke('save-config', newConfig)
-            console.log(config)
+
             Object.assign(config, newConfig)
-            console.log(config)
         } catch (error) {
             console.error('Erro ao salvar config:', error)
         }

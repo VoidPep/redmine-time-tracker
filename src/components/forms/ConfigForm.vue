@@ -1,6 +1,12 @@
 <template>
   <h2>Configurações redmine</h2>
-  <Form @submit="onSubmit" :validation-schema="schema">
+
+  <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      :initial-values="initialValues"
+      :key="formKey"
+  >
     <div class="d-flex flex-column align-items-end justify-content-center gap-3 pt-3">
       <Field name="url" v-slot="{ field, errors }">
         <IftaLabel class="w-100">
@@ -17,7 +23,7 @@
         <small class="p-error" v-if="errors[0]">{{ errors[0] }}</small>
       </Field>
 
-      <button type="submit" class="p-button ms-auto p-component p-button">Salvar</button>
+      <Button type="submit" class="ms-auto p-component p-button">Salvar</Button>
     </div>
   </Form>
 
@@ -31,7 +37,12 @@ import {Field, Form, useForm} from "vee-validate";
 import {useRedmineStore} from "../../composables/useRedmineStore";
 
 const redmineStore = useRedmineStore();
-const config = ref({});
+const formKey = ref(0);
+
+const initialValues = ref({
+  url: '',
+  token: ''
+});
 
 const schema = yup.object({
   url: yup.string().url("Url deve ser uma url válida").required('Url é obrigatório'),
@@ -42,14 +53,14 @@ const onSubmit = function (values) {
   redmineStore.salvarConfiguracao(values);
 }
 
-onMounted(() => {
-  const {setFieldValue} = useForm();
-
-  config.value = redmineStore.carregarConfiguracao();
-
-  if (config.value) {
-    setFieldValue('url', config.value.url || '');
-    setFieldValue('token', config.value.token || '');
+onMounted(async () => {
+  const config = await redmineStore.carregarConfiguracao();
+  if (config) {
+    initialValues.value = {
+      url: config.url ?? '',
+      token: config.token ?? ''
+    };
+    formKey.value++;
   }
 })
 </script>
