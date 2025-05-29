@@ -5,7 +5,7 @@
 
 <template>
   <div class="bg-gray-50 rounded-lg p-6">
-    Time tracker
+
   </div>
 </template>
 

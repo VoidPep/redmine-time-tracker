@@ -1,4 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router'
+import {useRedmineStore} from "../composables/useRedmineStore";
+
+const redmineStore = useRedmineStore();
 
 const routes = [
     {
@@ -26,6 +29,22 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach(async (to, from, next) => {
+    const config = await redmineStore.carregarConfiguracao();
+    if (to.path === '/config') {
+        next();
+        return;
+    }
+
+
+    if (!config || !config.url || config.url !== '' && !config.token && config.token !== '') {
+        next('/config')
+        return;
+    }
+
+    next();
 })
 
 export default router

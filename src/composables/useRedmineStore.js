@@ -35,7 +35,7 @@ export function useRedmineStore() {
         // storageUsed.value = Math.min(usageInMB, maxStorage.value)
     }
 
-    const limparDados = () => {
+    const limparMemoriaUtilizada = () => {
         // localStorage.removeItem('time-entries')
         // timeEntries.value = []
         // storageUsed.value = 0
@@ -47,7 +47,7 @@ export function useRedmineStore() {
         sprintTasks,
         storageUsed,
         maxStorage,
-        limparDados,
+        limparDados: limparMemoriaUtilizada,
         salvarConfiguracao,
         calcularUsoDeMemoria,
         carregarConfiguracao
